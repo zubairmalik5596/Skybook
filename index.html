@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#071b35">
+<title>SkyBook — Flight Booking</title>
+<style>
+:root{--navy:#071b35;--blue:#1769e0;--sky:#eaf3ff;--ink:#17263c;--muted:#68778b;--white:#fff;--line:#e3eaf2;--green:#13865b}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background:#f5f8fc}
+header{background:var(--navy);color:white;padding:18px 6%;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:25px;font-weight:800;letter-spacing:.3px}.logo span{color:#65b5ff}
+nav a{color:#dbe8f8;text-decoration:none;margin-left:25px;font-size:14px}
+.hero{background:linear-gradient(120deg,#071b35ee,#123e70dd),url('https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=1800&q=85') center/cover;color:white;padding:62px 6% 105px}
+.hero h1{font-size:clamp(34px,5vw,54px);margin:0 0 12px}.hero p{color:#d5e5f8;font-size:17px;margin:0}
+.wrap{max-width:1100px;margin:-55px auto 55px;padding:0 18px}
+.booking{background:white;border-radius:18px;padding:27px;box-shadow:0 15px 45px #0c2a5018}
+.triptypes{display:flex;gap:22px;margin-bottom:23px;flex-wrap:wrap}.triptypes label{font-weight:700;font-size:14px;cursor:pointer}.triptypes input{accent-color:var(--blue);margin-right:6px}
+.fields{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.field label{display:block;font-size:12px;color:var(--muted);font-weight:700;margin:0 0 8px}
+.field input,.field select{width:100%;height:48px;border:1px solid var(--line);border-radius:9px;padding:0 12px;font-size:15px;color:var(--ink);background:#fff;min-width:0}
+.search{margin-top:20px;background:var(--blue);color:white;border:0;border-radius:9px;padding:15px 30px;font-size:16px;font-weight:700;cursor:pointer;width:100%}
+.search:hover{background:#0e55bd}
+.section{max-width:1100px;margin:0 auto 55px;padding:0 18px}.section h2{font-size:27px;margin-bottom:8px}.sub{color:var(--muted);margin-top:0}
+.results{display:grid;gap:14px}.flight{background:white;border:1px solid var(--line);border-radius:13px;padding:18px;display:grid;grid-template-columns:1.3fr 1fr 1fr auto;align-items:center;gap:15px}
+.airline{font-weight:800}.small{font-size:12px;color:var(--muted);margin-top:5px}.route{font-size:20px;font-weight:800}.duration{text-align:center;color:var(--muted);font-size:13px}.price{font-size:20px;font-weight:800;color:var(--blue)}.book{background:var(--navy);color:white;border:0;border-radius:8px;padding:11px 17px;cursor:pointer;font-weight:700}
+.note{background:#fff8e8;border:1px solid #f3dfb5;padding:14px 16px;border-radius:10px;color:#75531a;font-size:13px;line-height:1.5;margin-top:18px}
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.feature{background:white;padding:22px;border-radius:13px;border:1px solid var(--line)}.feature b{display:block;margin:8px 0}.feature p{color:var(--muted);font-size:14px;line-height:1.5;margin-bottom:0}
+footer{background:var(--navy);color:#c5d5e8;text-align:center;padding:28px 15px;font-size:13px}
+.modal{display:none;position:fixed;inset:0;background:#06172dcc;z-index:5;align-items:center;justify-content:center;padding:16px}.dialog{background:white;border-radius:16px;padding:25px;max-width:460px;width:100%;max-height:90vh;overflow:auto}.dialog h3{margin-top:0}.dialog input{width:100%;padding:12px;border:1px solid var(--line);border-radius:8px;margin:6px 0 13px}.close{float:right;border:0;background:#eef3f9;border-radius:7px;padding:7px 10px;cursor:pointer}.confirm{background:var(--green);color:white;border:0;border-radius:8px;padding:13px;width:100%;font-weight:700;cursor:pointer}
+@media(max-width:760px){header{padding:16px 5%}nav a{margin-left:12px;font-size:12px}.hero{padding:48px 5% 90px}.fields{grid-template-columns:repeat(2,1fr)}.flight{grid-template-columns:1fr 1fr}.flight .duration{text-align:left}.flight .price{align-self:center}.features{grid-template-columns:1fr}}
+@media(max-width:420px){nav a:nth-child(2){display:none}.booking{padding:18px}.fields{grid-template-columns:1fr 1fr}.field input,.field select{font-size:13px;padding:0 8px}.route{font-size:17px}}
+
+/* SkyBook refreshed theme */
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+body{background:#f4f7fb}
+.site-header{position:sticky;top:0;z-index:4;padding:15px 6%;box-shadow:0 5px 25px #00152c22;gap:20px}
+.logo{text-decoration:none;color:white;white-space:nowrap}
+.site-header nav{display:flex;align-items:center;gap:clamp(10px,1.7vw,24px)}
+.site-header nav a{margin:0;font-weight:600;transition:color .2s}
+.site-header nav a:hover{color:#75c4ff}
+.site-header nav .nav-cta{background:#fff;color:#0c3970;padding:11px 17px;border-radius:9px}
+.site-header nav .nav-cta:hover{background:#dceeff;color:#0c3970}
+.menu-toggle{display:none;background:#ffffff18;border:1px solid #ffffff44;color:white;border-radius:8px;padding:8px 12px;font-size:20px}
+.hero{min-height:440px;padding:76px 6% 115px;background-image:linear-gradient(100deg,#061a34f5 0%,#0d3d70d9 54%,#0b3158a8 100%),url('https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=1800&q=85');background-position:center}
+.hero-inner{max-width:1100px;margin:auto}
+.hero h1{line-height:1.08;letter-spacing:-1.5px;margin-top:17px}
+.hero h1 span{color:#79c8ff}
+.hero p{max-width:540px;line-height:1.7}
+.eyebrow{display:inline-block;color:#9edaff;font-size:11px;font-weight:800;letter-spacing:2px}
+.eyebrow.dark{color:#1769e0}
+.hero-link{display:inline-flex;gap:25px;align-items:center;margin-top:25px;padding:14px 19px;background:#fff;color:#0b3158;border-radius:9px;text-decoration:none;font-weight:800}
+.hero-link span{font-size:20px}
+.hero-trust{display:flex;gap:22px;flex-wrap:wrap;margin-top:34px;color:#d7eaff;font-size:13px}
+.booking{border:1px solid #e8eef6}
+.search{background:linear-gradient(100deg,#1769e0,#168edb);box-shadow:0 8px 18px #1769e033}
+.section{padding-top:12px}
+.section-heading{display:flex;justify-content:space-between;align-items:end}
+.destination-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:22px}
+.destination-card{min-height:245px;border-radius:16px;overflow:hidden;position:relative;display:flex;align-items:end;padding:22px;color:white;background-size:cover;background-position:center;box-shadow:0 10px 25px #09234220}
+.destination-card:before{content:"";position:absolute;inset:0;background:linear-gradient(0deg,#061a34ed,transparent 75%)}
+.destination-card>div{position:relative}
+.destination-card span{font-size:10px;letter-spacing:1.5px;font-weight:800;color:#b9e4ff}
+.destination-card h3{font-size:27px;margin:8px 0 3px}
+.destination-card p{margin:0;color:#e1efff;font-size:13px}
+.dubai{background-image:url('https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=900&q=80')}
+.istanbul{background-image:url('https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?auto=format&fit=crop&w=900&q=80')}
+.jeddah{background-image:url('https://images.unsplash.com/photo-1568322445389-f64ac2515020?auto=format&fit=crop&w=900&q=80')}
+.deal-band{max-width:1064px;margin:0 auto 58px;padding:34px 38px;border-radius:18px;background:linear-gradient(110deg,#092344,#1769b8);color:white;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.deal-band h2{font-size:28px;margin:10px 0}.deal-band p{color:#d7e8fa;max-width:620px;line-height:1.5;margin-bottom:0}
+.deal-band a{white-space:nowrap;text-decoration:none;background:white;color:#0a3769;padding:13px 17px;border-radius:9px;font-weight:800}
+.faq-list{display:grid;gap:10px;margin-top:20px}
+.faq-list details{background:white;border:1px solid var(--line);border-radius:11px;padding:17px 19px}
+.faq-list summary{font-weight:700;cursor:pointer}
+.faq-list details p{color:var(--muted);line-height:1.55;margin-bottom:0}
+footer{padding:36px 15px;line-height:1.7}
+.footer-logo{font-size:24px;font-weight:800;color:white}.footer-logo span{color:#65b5ff}
+footer p{margin:5px}
+@media(max-width:850px){.site-header{flex-wrap:wrap}.menu-toggle{display:block}.site-header nav{display:none;flex-basis:100%;flex-direction:column;align-items:stretch;padding:10px 0 5px}.site-header nav.open{display:flex}.site-header nav a{padding:9px 4px}.site-header nav .nav-cta{text-align:center}.destination-grid{grid-template-columns:1fr 1fr}.deal-band{margin-left:18px;margin-right:18px}}
+@media(max-width:560px){.hero{padding:55px 6% 95px;min-height:420px}.hero-trust{gap:12px;font-size:11px}.destination-grid{grid-template-columns:1fr}.destination-card{min-height:210px}.deal-band{padding:25px;display:block}.deal-band a{display:inline-block;margin-top:20px}.section h2{font-size:24px}}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <a class="logo" href="#home">✈ Sky<span>Book</span></a>
+  <button class="menu-toggle" id="menuToggle" aria-label="Open navigation" aria-expanded="false">☰</button>
+  <nav id="mainNav">
+    <a href="#home">Home</a><a href="#book">Book Flights</a><a href="#destinations">Destinations</a>
+    <a href="#deals">Special Deals</a><a href="#why">Why SkyBook</a><a href="#faq">FAQ</a>
+    <a class="nav-cta" href="#contact">Contact Us</a>
+  </nav>
+</header>
+<section class="hero" id="home">
+  <div class="hero-inner"><span class="eyebrow">✦ EXPLORE THE WORLD WITH SKYBOOK</span>
+    <h1>Your journey<br><span>starts here.</span></h1>
+    <p>Discover new destinations, compare sample flights and plan your next adventure with ease.</p>
+    <a class="hero-link" href="#book">Find your flight <span>→</span></a>
+    <div class="hero-trust"><span>✈ Easy search</span><span>◈ Mobile friendly</span><span>♡ Travel inspiration</span></div>
+  </div>
+</section>
+<main>
+<div class="wrap" id="book">
+<section class="booking">
+<div class="triptypes">
+<label><input type="radio" name="trip" value="round" checked> Round trip</label>
+<label><input type="radio" name="trip" value="one"> One way</label>
+</div>
+<form id="flightForm">
+<div class="fields">
+<div class="field"><label for="from">FROM</label><select id="from" required><option value="Karachi">Karachi (KHI)</option><option value="Lahore">Lahore (LHE)</option><option value="Islamabad">Islamabad (ISB)</option><option value="Dubai">Dubai (DXB)</option><option value="Jeddah">Jeddah (JED)</option><option value="Istanbul">Istanbul (IST)</option></select></div>
+<div class="field"><label for="to">TO</label><select id="to" required><option value="Lahore">Lahore (LHE)</option><option value="Karachi">Karachi (KHI)</option><option value="Islamabad">Islamabad (ISB)</option><option value="Dubai">Dubai (DXB)</option><option value="Jeddah">Jeddah (JED)</option><option value="Istanbul">Istanbul (IST)</option></select></div>
+<div class="field"><label for="depart">DEPARTURE</label><input id="depart" type="date" required></div>
+<div class="field" id="returnField"><label for="return">RETURN</label><input id="return" type="date"></div>
+<div class="field"><label for="passengers">PASSENGERS</label><select id="passengers"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option></select></div>
+<div class="field"><label for="cabin">CLASS</label><select id="cabin"><option>Economy</option><option>Business</option><option>First Class</option></select></div>
+</div>
+<button class="search" type="submit">Search Flights →</button>
+</form>
+<div class="note">Demo website: flight options and prices below are sample data. This site does not check live airline inventory, issue tickets, or accept payments.</div>
+</section></div>
+<section class="section" id="resultsSection" hidden><h2>Available sample flights</h2><p class="sub" id="searchSummary"></p><div class="results" id="results"></div></section>
+<section class="section" id="destinations">
+  <div class="section-heading"><div><span class="eyebrow dark">GET INSPIRED</span><h2>Popular destinations</h2><p class="sub">A few places to add to your travel wishlist.</p></div></div>
+  <div class="destination-grid">
+    <article class="destination-card dubai"><div><span>UNITED ARAB EMIRATES</span><h3>Dubai</h3><p>City lights &amp; desert adventures</p></div></article>
+    <article class="destination-card istanbul"><div><span>TÜRKIYE</span><h3>Istanbul</h3><p>Where cultures meet</p></div></article>
+    <article class="destination-card jeddah"><div><span>SAUDI ARABIA</span><h3>Jeddah</h3><p>Coastal charm &amp; heritage</p></div></article>
+  </div>
+</section>
+<section class="deal-band" id="deals"><div><span class="eyebrow">TRAVEL PLANS START HERE</span><h2>Ready for your next getaway?</h2><p>Search sample routes and explore the possibilities. Prices shown in this demo are illustrative only.</p></div><a href="#book">Explore flights →</a></section>
+<section class="section" id="why"><h2>Travel with confidence</h2><p class="sub">Everything you need for a smoother booking experience.</p><div class="features">
+<div class="feature"><span>🔎</span><b>Easy flight search</b><p>Choose your route, travel dates, passenger count and cabin class.</p></div>
+<div class="feature"><span>📱</span><b>Works on mobile</b><p>Responsive layout designed for phones, tablets and desktop screens.</p></div>
+<div class="feature"><span>🧾</span><b>Booking request</b><p>Enter your details and get a demo booking reference on screen.</p></div>
+</div></section>
+</main>
+<section class="section" id="faq"><span class="eyebrow dark">NEED TO KNOW</span><h2>Frequently asked questions</h2>
+  <div class="faq-list">
+    <details><summary>Are these live flight prices?</summary><p>No. This is a front-end demo and flight names, schedules and prices are sample data.</p></details>
+    <details><summary>Can I receive a real airline ticket?</summary><p>Not yet. Real ticketing requires a live airline or travel-provider integration and a secure booking backend.</p></details>
+    <details><summary>Can I use SkyBook on my phone?</summary><p>Yes. The layout adapts to mobile phones, tablets and desktop screens.</p></details>
+  </div>
+</section>
+<footer id="contact"><div class="footer-logo">✈ Sky<span>Book</span></div><p>Make your next journey memorable.</p><p>Demo flight booking website · Contact: hello@skybook.example</p><small>© 2026 SkyBook. All rights reserved.</small></footer>
+<div class="modal" id="modal"><div class="dialog"><button class="close" onclick="closeModal()">✕</button><h3>Passenger details</h3><p class="small" id="chosenFlight"></p><form id="passengerForm"><label>Full name</label><input id="fullName" required placeholder="Enter your full name"><label>Email address</label><input id="email" type="email" required placeholder="you@example.com"><label>Phone number</label><input id="phone" type="tel" required placeholder="+92 3xx xxxxxxx"><button class="confirm" type="submit">Create demo booking</button></form><p class="small">Demo only — no ticket will be issued and no payment will be taken.</p><div id="confirmation" aria-live="polite"></div></div></div>
+<script>
+const menuToggle=document.getElementById('menuToggle');
+const mainNav=document.getElementById('mainNav');
+menuToggle.addEventListener('click',()=>{const opened=mainNav.classList.toggle('open');menuToggle.setAttribute('aria-expanded',String(opened));menuToggle.textContent=opened?'✕':'☰';});
+mainNav.querySelectorAll('a').forEach(link=>link.addEventListener('click',()=>{mainNav.classList.remove('open');menuToggle.setAttribute('aria-expanded','false');menuToggle.textContent='☰';}));
+
+const today=new Date();const iso=d=>{const x=new Date(d);x.setMinutes(x.getMinutes()-x.getTimezoneOffset());return x.toISOString().slice(0,10)};
+document.getElementById('depart').min=iso(today);document.getElementById('depart').value=iso(today);
+document.getElementById('return').min=iso(today);document.getElementById('return').value=iso(new Date(today.getTime()+7*86400000));
+document.querySelectorAll('input[name="trip"]').forEach(r=>r.addEventListener('change',()=>{const one=document.querySelector('input[name="trip"]:checked').value==='one';document.getElementById('returnField').style.display=one?'none':'block';document.getElementById('return').required=!one;}));
+let selected='';
+document.getElementById('flightForm').addEventListener('submit',e=>{
+e.preventDefault();const from=document.getElementById('from').value,to=document.getElementById('to').value,dep=document.getElementById('depart').value,ret=document.getElementById('return').value,one=document.querySelector('input[name="trip"]:checked').value==='one';
+if(from===to){alert('Please choose two different cities.');return}if(!one&&ret<dep){alert('Return date must be on or after departure date.');return}
+document.getElementById('searchSummary').textContent=`${from} → ${to} · ${dep}${one?'':` to ${ret}`} · ${document.getElementById('passengers').value} passenger(s) · ${document.getElementById('cabin').value}`;
+const base=18000+Math.floor(Math.random()*12000), flights=[['SkyWays','08:30','10:15',base],['AirConnect','13:10','14:55',base+4500],['Pakistan Air Demo','19:20','21:05',base+7200]];
+document.getElementById('results').innerHTML=flights.map((f,i)=>`<article class="flight"><div><div class="airline">✈ ${f[0]}</div><div class="small">Sample flight · ${['SW 204','AC 118','PA 330'][i]}</div></div><div><div class="route">${f[1]} — ${f[2]}</div><div class="small">${from} to ${to}</div></div><div class="duration">1h 45m<div class="small">Non-stop</div></div><div><div class="price">PKR ${f[3].toLocaleString('en-PK')}</div><button class="book" onclick="bookFlight('${f[0]}','${f[1]}','${f[2]}',${f[3]})">Select</button></div></article>`).join('');
+document.getElementById('resultsSection').hidden=false;document.getElementById('resultsSection').scrollIntoView({behavior:'smooth'});
+});
+function bookFlight(name,start,end,price){selected=`${name} · ${start}–${end} · PKR ${price.toLocaleString('en-PK')}`;document.getElementById('chosenFlight').textContent=selected;document.getElementById('confirmation').textContent='';document.getElementById('modal').style.display='flex'}
+function closeModal(){document.getElementById('modal').style.display='none'}
+document.getElementById('passengerForm').addEventListener('submit',e=>{e.preventDefault();const ref='SB'+Math.random().toString(36).slice(2,8).toUpperCase();document.getElementById('confirmation').innerHTML=`<div class="note" style="background:#eaf8f1;border-color:#bce5d0;color:#126344"><b>Demo request created!</b><br>Reference: ${ref}<br>Name: ${document.getElementById('fullName').value}<br>Selected: ${selected}<br><br>This is not a confirmed airline reservation.</div>`;});
+document.getElementById('modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal()});
+</script>
+</body>
+</html>
